@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Школа 105 - Кабинет китайского языка</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Включаем поддержку темной темы по атрибуту data-theme
+            theme: {
+                extend: {
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        pulse: {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                            '50%': { transform: 'scale(1.05)', opacity: '0.9' },
+                        }
+                    },
+                    animation: {
+                        fadeIn: 'fadeIn 0.5s ease-out forwards',
+                        slideUp: 'slideUp 0.5s ease-out forwards',
+                        scaleIn: 'scaleIn 0.3s ease-out forwards',
+                        pulse: 'pulse 1.5s infinite',
+                    },
+                    colors: {
+                        'primary': '#1d4ed8', // Пример синего
+                        'secondary': '#6d28d9', // Пример фиолетового
+                        'accent': '#f43f5e', // Пример красного
+                    }
+                },
+            },
+            plugins: [],
+        }
+    </script>
+    <style>
+        /* Оптимизация скроллбара (Webkit browsers) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        /* Стили для темной темы */
+        body[data-theme="dark"] .bg-light { background-color: #111827; }
+        body[data-theme="dark"] .text-light { color: #e5e7eb; }
+        body[data-theme="dark"] .text-dark { color: #1f2937; }
+        body[data-theme="dark"] .border-light { border-color: #374151; }
+        body[data-theme="dark"] .hover\:bg-light-hover:hover { background-color: #1f2937; }
+        body[data-theme="dark"] .bg-card { background-color: #1f2937; }
+        body[data-theme="dark"] .text-primary { color: #60a5fa; } /* Светло-голубой для темной темы */
+        body[data-theme="dark"] .bg-primary { background-color: #60a5fa; }
+        body[data-theme="dark"] .border-primary { border-color: #60a5fa; }
+        body[data-theme="dark"] .bg-secondary { background-color: #a78bfa; }
+        body[data-theme="dark"] .text-secondary { color: #a78bfa; }
+        body[data-theme="dark"] .bg-accent { background-color: #f87171; }
+        body[data-theme="dark"] .text-accent { color: #f87171; }
+        body[data-theme="dark"] input[type="text"],
+        body[data-theme="dark"] input[type="password"],
+        body[data-theme="dark"] input[type="email"],
+        body[data-theme="dark"] textarea {
+            background-color: #1f2937;
+            color: #e5e7eb;
+            border-color: #4b5563;
+        }
+        body[data-theme="dark"] .modal-backdrop { background-color: rgba(0, 0, 0, 0.7); }
+        body[data-theme="dark"] .modal-content { background-color: #1f2937; color: #e5e7eb; }
+
+        /* Стили для навигационных элементов */
+        .nav-link {
+            transition: color 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+        }
+        .nav-link:hover {
+            color: theme('colors.primary');
+            transform: translateY(-2px);
+        }
+        .nav-link.active {
+            font-weight: bold;
+            color: theme('colors.primary');
+            background-color: theme('colors.primary.DEFAULT', '#1d4ed8') + '20'; /* Полупрозрачный фон */
+        }
+
+        /* Стиль карточек */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Анимации для контента */
+        .content-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .content-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .content-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .content-exit-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        /* Анимация для уведомлений */
+        .notification-enter {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        .notification-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .notification-exit {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .notification-exit-active {
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        /* Стиль модальных окон */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .modal-content.active {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #6b7280;
+        }
+        .modal-close-btn:hover {
+            color: #1f2937;
+        }
+
+        /* Стили для практики (Duolingo-like) */
+        .practice-level-card {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        .rounded-full-progress {
+            border-radius: 9999px;
+        }
+        .progress-bar-track {
+            background-color: #e5e7eb50;
+        }
+        .progress-bar-fill {
+            background-color: theme('colors.primary');
+            transition: width 0.5s ease-out;
+        }
+        body[data-theme="dark"] .progress-bar-track {
+            background-color: #4b556350;
+        }
+        body[data-theme="dark"] .progress-bar-fill {
+            background-color: #60a5fa;
+        }
+
+        /* Стилизация для UI элементов */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary {
+            @apply bg-primary text-white;
+        }
+        .btn-primary:hover {
+            @apply bg-opacity-80 shadow-lg transform translate-y-[-2px];
+        }
+        .btn-secondary {
+            @apply bg-secondary text-white;
+        }
+        .btn-secondary:hover {
+            @apply bg-opacity-80 shadow-lg transform translate-y-[-2px];
+        }
+        .btn-outline-primary {
+            @apply border-2 border-primary text-primary;
+        }
+        .btn-outline-primary:hover {
+            @apply bg-primary text-white transform translate-y-[-2px];
+        }
+        .input-field {
+            @apply w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+        }
+        body[data-theme="dark"] .input-field {
+            @apply focus:ring-primary;
+        }
+
+    </style>
+</head>
+<body class="bg-light text-light font-sans transition-colors duration-300">
+    <!-- Header -->
+    <header id="site-header" class="sticky top-0 z-50 bg-white dark:bg-[#1f2937] shadow-md py-4 px-6 flex justify-between items-center transition-colors duration-300">
+        <!-- Logo and Title -->
+        <div class="flex items-center space-x-4">
+            <img src="https://via.placeholder.com/40" alt="School Logo" class="h-10 w-10 rounded-full">
+            <h1 class="text-2xl font-bold text-primary dark:text-primary">Школа 105</h1>
+            <span class="text-lg text-gray-600 dark:text-gray-300 hidden md:inline">Кабинет китайского языка</span>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-6 items-center">
+            <a href="#home" class="nav-link" data-page="home">Главная</a>
+            <a href="#teachers" class="nav-link" data-page="teachers">Учителя</a>
+            <a href="#classes" class="nav-link" data-page="classes">Классы</a>
+            <a href="#lessons" class="nav-link" data-page="lessons">Занятия</a>
+            <a href="#practice" class="nav-link" data-page="practice">Практика</a>
+            <a href="#resources" class="nav-link" data-page="resources">Ресурсы</a>
+        </nav>
+
+        <!-- Right Actions -->
+        <div class="flex items-center space-x-4">
+            <!-- Theme Switcher -->
+            <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none">
+                <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 18v1m-9-11h1m18 0h1M4.77 4.77l1.06 1.06M17.23 17.23l1.06 1.06M12 12a3 3 0 100-6 3 3 0 000 6z" />
+                </svg>
+            </button>
+            <!-- Q&A Button -->
+            <button id="qa-btn" class="btn btn-outline-primary py-2 px-4 text-sm">Q&A</button>
+            <!-- Auth Button / Profile -->
+            <div id="auth-buttons">
+                <button id="login-btn" class="btn btn-primary py-2 px-4 text-sm">Войти</button>
+            </div>
+            <div id="user-profile" class="hidden items-center space-x-2 cursor-pointer" onclick="toggleUserDropdown(event)">
+                <img id="user-avatar" src="https://via.placeholder.com/40" alt="Avatar" class="h-10 w-10 rounded-full">
+                <span id="user-name" class="font-medium text-primary dark:text-primary"></span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                <div id="user-dropdown" class="absolute right-6 top-20 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-lg py-2 px-4 hidden z-50">
+                    <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">Профиль</a>
+                    <a href="#" id="logout-btn" class="block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">Выйти</a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <nav id="mobile-menu" class="md:hidden fixed top-0 right-0 w-64 bg-white dark:bg-[#1f2937] h-full shadow-xl z-40 transition-transform duration-300 transform translate-x-full">
+        <div class="p-6">
+            <button id="close-mobile-menu" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl">&times;</button>
+            <div class="flex flex-col space-y-4 mt-8">
+                 <a href="#home" class="nav-link py-2 px-4 rounded-md" data-page="home">Главная</a>
+                 <a href="#teachers" class="nav-link py-2 px-4 rounded-md" data-page="teachers">Учителя</a>
+                 <a href="#classes" class="nav-link py-2 px-4 rounded-md" data-page="classes">Классы</a>
+                 <a href="#lessons" class="nav-link py-2 px-4 rounded-md" data-page="lessons">Занятия</a>
+                 <a href="#practice" class="nav-link py-2 px-4 rounded-md" data-page="practice">Практика</a>
+                 <a href="#resources" class="nav-link py-2 px-4 rounded-md" data-page="resources">Ресурсы</a>
+                 <hr class="border-gray-200 dark:border-gray-700">
+                 <button id="login-mobile-btn" class="btn btn-primary w-full">Войти</button>
+                 <div id="user-profile-mobile" class="hidden">
+                     <img id="user-avatar-mobile" src="https://via.placeholder.com/40" alt="Avatar" class="h-10 w-10 rounded-full mx-auto mb-2">
+                     <span id="user-name-mobile" class="text-center block font-medium text-primary dark:text-primary"></span>
+                     <a href="#" class="block px-2 py-1 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">Профиль</a>
+                     <button id="logout-mobile-btn" class="btn btn-outline-accent w-full mt-2">Выйти</button>
+                 </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="container mx-auto p-6 py-12 md:py-20 relative overflow-hidden">
+        <!-- Pages will be loaded here -->
+        <div id="loading-spinner" class="fixed inset-0 flex items-center justify-center bg-light text-light dark:bg-[#111827] dark:text-white z-50 animate-pulse">
+            <svg class="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V2.5C5.708 2.5 2.5 5.708 2.5 12H4z"></path>
+            </svg>
+        </div>
+
+        <!-- Home Page -->
+        <section id="home-page" data-page="home" class="hidden animate-fadeIn">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-extrabold text-primary mb-4">Добро пожаловать в Кабинет Китайского Языка!</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Откройте для себя богатство китайской культуры и языка вместе с нами. Мы предлагаем современные методики обучения, интерактивные упражнения и поддержку опытных преподавателей.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-16">
+                <div class="bg-card p-6 rounded-lg shadow-lg card">
+                    <h3 class="text-2xl font-bold text-primary mb-3">Интерактивные Уроки</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Современные методики, основанные на AI, для эффективного изучения.</p>
+                </div>
+                <div class="bg-card p-6 rounded-lg shadow-lg card">
+                    <h3 class="text-2xl font-bold text-primary mb-3">Опытные Учителя</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Преподаватели с многолетним опытом и любовью к своему делу.</p>
+                </div>
+                <div class="bg-card p-6 rounded-lg shadow-lg card">
+                    <h3 class="text-2xl font-bold text-primary mb-3">Культурное Погружение</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Узнайте о традициях, истории и обычаях Китая.</p>
+                </div>
+            </div>
+            <div class="text-center py-16 bg-gray-100 dark:bg-[#182235] rounded-xl">
+                <h3 class="text-3xl font-bold text-secondary mb-6">Интересные Факты о Китае</h3>
+                <p id="fun-fact" class="text-2xl italic text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">Загрузка факта...</p>
+            </div>
+        </section>
+
+        <!-- Teachers Page -->
+        <section id="teachers-page" data-page="teachers" class="hidden animate-fadeIn">
+            <h2 class="text-4xl font-bold text-center text-primary mb-12">Наши Учителя</h2>
+            <div id="teachers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Teacher cards will be loaded here -->
+                <div class="text-center py-8">
+                    <button id="add-teacher-btn" class="btn btn-primary p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-block mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        Добавить Учителя
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Classes Page -->
+        <section id="classes-page" data-page="classes" class="hidden animate-fadeIn">
+            <h2 class="text-4xl font-bold text-center text-primary mb-12">Наши Классы</h2>
+            <div id="classes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Class cards will be loaded here -->
+                <div class="text-center py-8">
+                    <button id="add-class-btn" class="btn btn-primary p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-block mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        Добавить Класс
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons Page -->
+        <section id="lessons-page" data-page="lessons" class="hidden animate-fadeIn">
+            <h2 class="text-4xl font-bold text-center text-primary mb-12">Расписание Занятий</h2>
+            <div class="bg-card p-8 rounded-lg shadow-lg">
+                <ul id="lessons-list" class="space-y-6">
+                    <!-- Lesson items will be loaded here -->
+                </ul>
+                <div class="text-center mt-8">
+                    <button id="add-lesson-btn" class="btn btn-primary p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-block mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        Добавить Занятие
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Page -->
+        <section id="practice-page" data-page="practice" class="hidden animate-fadeIn">
+            <h2 class="text-4xl font-bold text-center text-primary mb-12">Практика</h2>
+            <div id="practice-content">
+                <!-- Practice levels and lessons will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Resources Page -->
+        <section id="resources-page" data-page="resources" class="hidden animate-fadeIn">
+            <h2 class="text-4xl font-bold text-center text-primary mb-12">Полезные Ресурсы</h2>
+            <div class="bg-card p-8 rounded-lg shadow-lg">
+                <ul id="resources-list" class="space-y-4">
+                    <!-- Resource links will be loaded here -->
+                </ul>
+                 <div class="text-center mt-8">
+                    <button id="add-resource-btn" class="btn btn-primary p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-block mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        Добавить Ресурс
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="modal-backdrop" style="display: none;">
+        <div class="modal-content animate-scaleIn">
+            <button id="close-auth-modal" class="modal-close-btn">&times;</button>
+            <h2 class="text-3xl font-bold text-primary mb-6 text-center">Вход</h2>
+            <div id="login-form">
+                <div class="mb-4">
+                    <label for="login-email" class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="login-email" class="input-field" placeholder="Введите ваш email">
+                </div>
+                <div class="mb-6">
+                    <label for="login-password" class="block text-sm font-medium mb-2">Пароль</label>
+                    <input type="password" id="login-password" class="input-field" placeholder="Введите ваш пароль">
+                </div>
+                <button id="submit-login-btn" class="btn btn-primary w-full mb-4">Войти</button>
+                <p class="text-center text-sm">Забыли пароль? <button id="forgot-password-btn" class="text-primary hover:underline">Восстановить</button></p>
+                <p class="text-center text-sm mt-4">Нет аккаунта? <button id="show-register-btn" class="text-secondary hover:underline font-bold">Зарегистрироваться</button></p>
+            </div>
+            <div id="register-form" class="hidden">
+                <h2 class="text-3xl font-bold text-primary mb-6 text-center">Регистрация</h2>
+                <div class="mb-4">
+                    <label for="register-name" class="block text-sm font-medium mb-2">Имя</label>
+                    <input type="text" id="register-name" class="input-field" placeholder="Ваше имя">
+                </div>
+                <div class="mb-4">
+                    <label for="register-email" class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="register-email" class="input-field" placeholder="Введите ваш email">
+                </div>
+                <div class="mb-4">
+                    <label for="register-password" class="block text-sm font-medium mb-2">Пароль</label>
+                    <input type="password" id="register-password" class="input-field" placeholder="Введите ваш пароль">
+                </div>
+                 <div class="mb-6">
+                    <label for="register-role" class="block text-sm font-medium mb-2">Выберите роль</label>
+                    <select id="register-role" class="input-field">
+                        <option value="student">Ученик</option>
+                        <option value="teacher">Учитель</option>
+                    </select>
+                </div>
+                <button id="submit-register-btn" class="btn btn-primary w-full mb-4">Зарегистрироваться</button>
+                <p class="text-center text-sm">Уже есть аккаунт? <button id="show-login-btn" class="text-secondary hover:underline font-bold">Войти</button></p>
+            </div>
+            <div id="forgot-password-form" class="hidden">
+                 <h2 class="text-3xl font-bold text-primary mb-6 text-center">Восстановление пароля</h2>
+                 <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">Введите email, связанный с вашим аккаунтом, и мы отправим инструкцию по восстановлению.</p>
+                 <div class="mb-6">
+                    <label for="forgot-email" class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="forgot-email" class="input-field" placeholder="Введите ваш email">
+                </div>
+                <button id="submit-forgot-password-btn" class="btn btn-primary w-full mb-2">Отправить</button>
+                <p class="text-center text-sm">Вернуться к <button id="show-login-from-forgot-btn" class="text-secondary hover:underline font-bold">Входу</button></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q&A Modal -->
+    <div id="qa-modal" class="modal-backdrop" style="display: none;">
+        <div class="modal-content animate-scaleIn w-full max-w-3xl">
+            <button id="close-qa-modal" class="modal-close-btn">&times;</button>
+            <h2 class="text-3xl font-bold text-primary mb-6">Вопросы и Ответы</h2>
+
+            <div id="qa-display" class="max-h-[60vh] overflow-y-auto pr-4 mb-6">
+                <!-- Q&A Items will be loaded here -->
+            </div>
+
+            <div id="ask-question-form">
+                <h3 class="text-xl font-bold text-secondary mb-4">Задать Вопрос</h3>
+                <textarea id="question-input" rows="3" class="input-field mb-4" placeholder="Введите ваш вопрос..."></textarea>
+                <button id="submit-question-btn" class="btn btn-primary">Задать вопрос</button>
+            </div>
+
+            <div id="answer-question-form" class="hidden mt-8 border-t pt-6 border-gray-200 dark:border-gray-700">
+                <h3 class="text-xl font-bold text-secondary mb-4">Ответить на Вопрос</h3>
+                <p id="question-to-answer" class="text-lg mb-4 p-4 bg-gray-50 dark:bg-[#2b374a] rounded-md"></p>
+                <textarea id="answer-input" rows="3" class="input-field mb-4" placeholder="Введите ваш ответ..."></textarea>
+                <button id="submit-answer-btn" class="btn btn-primary">Ответить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Info Modal -->
+    <div id="teacher-info-modal" class="modal-backdrop" style="display: none;">
+        <div id="teacher-info-content" class="modal-content animate-scaleIn">
+            <button id="close-teacher-info-modal" class="modal-close-btn">&times;</button>
+            <h2 class="text-3xl font-bold text-primary mb-4"><span id="modal-teacher-name"></span></h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 mb-6"><span id="modal-teacher-title"></span></p>
+             <div class="flex flex-col md:flex-row gap-6">
+                 <img id="modal-teacher-avatar" src="" alt="Teacher Avatar" class="w-32 h-32 rounded-full object-cover mx-auto md:mx-0">
+                 <div class="flex-1">
+                    <p class="text-gray-700 dark:text-gray-300 mb-4"><strong class="text-secondary">Опыт:</strong> <span id="modal-teacher-experience"></span></p>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4"><strong class="text-secondary">Образование:</strong> <span id="modal-teacher-education"></span></p>
+                    <p class="text-gray-700 dark:text-gray-300"><strong class="text-secondary">Специализация:</strong> <span id="modal-teacher-specialization"></span></p>
+                </div>
+             </div>
+        </div>
+    </div>
+
+     <!-- Add/Edit Teacher Modal -->
+    <div id="add-edit-teacher-modal" class="modal-backdrop" style="display: none;">
+        <div class="modal-content animate-scaleIn">
+            <button id="close-add-edit-teacher-modal" class="modal-close-btn">&times;</button>
+            <h2 id="add-edit-teacher-title" class="text-3xl font-bold text-primary mb-6 text-center">Добавить Учителя</h2>
+            <form id="teacher-form">
+                <input type="hidden" id="teacher-id">
+                <div class="mb-4">
+                    <label for="teacher-name" class="block text-sm font-medium mb-2">Имя</label>
+                    <input type="text" id="teacher-name" class="input-field" required>
+                </div>
+                <div class="mb-4">
+                    <label for="teacher-title" class="block text-sm font-medium mb-2">Должность</label>
+                    <input type="text" id="teacher-title" class="input-field" required>
+                </div>
+                <div class="mb-4">
+                    <label for="teacher-experience" class="block text-sm font-medium mb-2">Опыт работы</label>
+                    <textarea id="teacher-experience" rows="2" class="input-field" required></textarea>
+                </div>
+                 <div class="mb-4">
+                    <label for="teacher-education" class="block text-sm font-medium mb-2">Образование</label>
+                    <textarea id="teacher-education" rows="2" class="input-field" required></textarea>
+                </div>
+                <div class="mb-6">
+                    <label for="teacher-specialization" class="block text-sm font-medium mb-2">Специализация</label>
+                    <input type="text" id="teacher-specialization" class="input-field" required>
+                </div>
+                 <div class="mb-6">
+                    <label for="teacher-avatar" class="block text-sm font-medium mb-2">URL Аватарки</label>
+                    <input type="url" id="teacher-avatar" class="input-field" placeholder="https://example.com/avatar.jpg" required>
+                </div>
+                <button type="submit" id="save-teacher-btn" class="btn btn-primary w-full">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Class Modal -->
+    <div id="add-edit-class-modal" class="modal-backdrop" style="display: none;">
+        <div class="modal-content animate-scaleIn">
+            <button id="close-add-edit-class-modal" class="modal-close-btn">&times;</button>
+            <h2 id="add-edit-class-title" class="text-3xl font-bold text-primary mb-6 text-center">Добавить Класс</h2>
+            <form id="class-form">
+                <input type="hidden" id="class-id">
+                <div class="mb-4">
+                    <label for="class-name" class="block text-sm font-medium mb-2">Название Класса</label>
+                    <input type="text" id="class-name" class="input-field" required>
+                </div>
+                <div class="mb-4">
+                    <label for="class-description" class="block text-sm font-medium mb-2">Описание</label>
+                    <textarea id="class-description" rows="3" class="input-field" required></textarea>
+                </div>
+                <div class="mb-6">
+                    <label for="class-teacher-id" class="block text-sm font-medium mb-2">Назначить Учителя</label>
+                    <select id="class-teacher-id" class="input-field" required>
+                        <option value="">-- Выберите учителя --</option>
+                        <!-- Teacher options will be populated -->
+                    </select>
+                </div>
+                 <button type="submit" id="save-class-btn" class="btn btn-primary w-full">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="modal-backdrop" style="display: none;">
+        <div class="modal-content animate-scaleIn">
+            <button id="close-add-student-modal" class="modal-close-btn">&times;</button>
+            <h2 class="text-3xl font-bold text-primary mb-6 text-center">Добавить Ученика в Класс</h2>
+            <form id="student-form">
+                <input type="hidden" id="student-class-id"> <!-- ID класса, в который добавляется ученик -->
+                <div class="mb-4">
+                    <label for="student-name-add" class="block text-sm font-medium mb-2">Имя Ученика</label>
+                    <input type="text" id="student-name-add" class="input-field" required placeholder="Введите имя ученика">
+                </div>
+                <div class="mb-4">
+                    <label for="student-email-add" class="block text-sm font-medium mb-2">Email Ученика</label>
+                    <input type="email" id="student-email-add" class="input-field" required placeholder="Введите email ученика">
+                </div>
+                 <div class="mb-6">
+                    <label for="student-password-add" class="block text-sm font-medium mb-2">Пароль Ученика</label>
+                    <input type="password" id="student-password-add" class="input-field" required placeholder="Введите пароль">
+                </div>
+                <button type="submit" id="save-student-btn" class="btn btn-primary w-full">Добавить Ученика</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Practice Lesson Modal -->
+    <div id="practice-lesson-modal" class="modal-backdrop" style="display: none;">
+        <div id="practice-lesson-content" class="modal-content animate-scaleIn w-full max-w-4xl">
+            <button id="close-practice-lesson-modal" class="modal-close-btn">&times;</button>
+            <h3 id="practice-lesson-title" class="text-3xl font-bold text-primary mb-6 text-center"></h3>
+            <div id="practice-exercises">
+                <!-- Exercises will be loaded here -->
+            </div>
+            <div id="exercise-feedback" class="mt-4 p-4 rounded-md hidden"></div>
+            <div id="lesson-completion-screen" class="hidden text-center">
+                <h4 class="text-4xl font-bold text-secondary mb-4">Урок Завершен!</h4>
+                <p class="text-xl mb-8">Ваш счет: <span id="final-score"></span></p>
+                <button id="next-lesson-btn" class="btn btn-primary mr-4">Следующий урок</button>
+                <button id="practice-level-return-btn" class="btn btn-outline-primary">К уровням</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-8 right-8 z-50 w-96 max-w-full">
+        <!-- Toast messages will be appended here -->
+    </div>
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        feather.replace();
+    </script>
+
+    <script>
+        // GLOBAL VARIABLES & CONFIG
+        const API_BASE_URL = '/mock-api'; // Имитация API
+        const CURRENT_USER_KEY = 'chineseClass_currentUser';
+        const USERS_KEY = 'chineseClass_users';
+        const TEACHERS_KEY = 'chineseClass_teachers';
+        const CLASSES_KEY = 'chineseClass_classes';
+        const LESSONS_KEY = 'chineseClass_lessons';
+        const RESOURCES_KEY = 'chineseClass_resources';
+        const PRACTICE_PROGRESS_KEY = 'chineseClass_practiceProgress';
+        const THEME_KEY = 'chineseClass_theme';
+        const QUESTIONS_KEY = 'chineseClass_questions';
+
+        let currentUser = null; // { id, name, email, role, avatar }
+        let allUsers = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+        let allTeachers = JSON.parse(localStorage.getItem(TEACHERS_KEY)) || [];
+        let allClasses = JSON.parse(localStorage.getItem(CLASSES_KEY)) || [];
+        let allLessons = JSON.parse(localStorage.getItem(LESSONS_KEY)) || [];
+        let allResources = JSON.parse(localStorage.getItem(RESOURCES_KEY)) || [];
+        let practiceProgress = JSON.parse(localStorage.getItem(PRACTICE_PROGRESS_KEY)) || {};
+        let allQuestions = JSON.parse(localStorage.getItem(QUESTIONS_KEY)) || [];
+
+        let currentView = 'home'; // Tracks the current page view
+
+        // DOM Elements
+        const siteHeader = document.getElementById('site-header');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        const mainContent = document.getElementById('main-content');
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        // Auth Modal Elements
+        const authModal = document.getElementById('auth-modal');
+        const closeAuthModal = document.getElementById('close-auth-modal');
+        const loginBtn = document.getElementById('login-btn');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const forgotPasswordForm = document.getElementById('forgot-password-form');
+        const showRegisterBtn = document.getElementById('show-register-btn');
+        const showLoginBtn = document.getElementById('show-login-btn');
+        const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+        const showLoginFromForgotBtn = document.getElementById('show-login-from-forgot-btn');
+        const submitLoginBtn = document.getElementById('submit-login-btn');
+        const submitRegisterBtn = document.getElementById('submit-register-btn');
+        const submitForgotPasswordBtn = document.getElementById('submit-forgot-password-btn');
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const registerNameInput = document.getElementById('register-name');
+        const registerEmailInput = document.getElementById('register-email');
+        const registerPasswordInput = document.getElementById('register-password');
+        const registerRoleInput = document.getElementById('register-role');
+
+        // User Profile Elements
+        const authButtonsDiv = document.getElementById('auth-buttons');
+        const userProfileDiv = document.getElementById('user-profile');
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+        const userDropdown = document.getElementById('user-dropdown');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Mobile Auth/Profile
+        const loginMobileBtn = document.getElementById('login-mobile-btn');
+        const userProfileMobileDiv = document.getElementById('user-profile-mobile');
+        const userAvatarMobile = document.getElementById('user-avatar-mobile');
+        const userNameMobile = document.getElementById('user-name-mobile');
+        const logoutMobileBtn = document.getElementById('logout-mobile-btn');
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        // Q&A Modal Elements
+        const qaModal = document.getElementById('qa-modal');
+        const closeQaModal = document.getElementById('close-qa-modal');
+        const qaDisplay = document.getElementById('qa-display');
+        const questionInput = document.getElementById('question-input');
+        const submitQuestionBtn = document.getElementById('submit-question-btn');
+        const answerQuestionForm = document.getElementById('answer-question-form');
+        const questionToAnswer = document.getElementById('question-to-answer');
+        const answerInput = document.getElementById('answer-input');
+        const submitAnswerBtn = document.getElementById('submit-answer-btn');
+        const qaBtn = document.getElementById('qa-btn');
+
+        // Teacher Info Modal Elements
+        const teacherInfoModal = document.getElementById('teacher-info-modal');
+        const closeTeacherInfoModal = document.getElementById('close-teacher-info-modal');
+
+        // Add/Edit Teacher Modal Elements
+        const addEditTeacherModal = document.getElementById('add-edit-teacher-modal');
+        const closeAddEditTeacherModal = document.getElementById('close-add-edit-teacher-modal');
+        const addEditTeacherTitle = document.getElementById('add-edit-teacher-title');
+        const teacherForm = document.getElementById('teacher-form');
+        const teacherIdInput = document.getElementById('teacher-id');
+        const teacherNameInput = document.getElementById('teacher-name');
+        const teacherTitleInput = document.getElementById('teacher-title');
+        const teacherExperienceInput = document.getElementById('teacher-experience');
+        const teacherEducationInput = document.getElementById('teacher-education');
+        const teacherSpecializationInput = document.getElementById('teacher-specialization');
+        const teacherAvatarInput = document.getElementById('teacher-avatar');
+        const saveTeacherBtn = document.getElementById('save-teacher-btn');
+        const addTeacherBtn = document.getElementById('add-teacher-btn');
+
+        // Add/Edit Class Modal Elements
+        const addEditClassModal = document.getElementById('add-edit-class-modal');
+        const closeAddEditClassModal = document.getElementById('close-add-edit-class-modal');
+        const addEditClassTitle = document.getElementById('add-edit-class-title');
+        const classForm = document.getElementById('class-form');
+        const classIdInput = document.getElementById('class-id');
+        const classNameInput = document.getElementById('class-name');
+        const classDescriptionInput = document.getElementById('class-description');
+        const classTeacherIdInput = document.getElementById('class-teacher-id');
+        const saveClassBtn = document.getElementById('save-class-btn');
+        const addClassBtn = document.getElementById('add-class-btn');
+
+        // Add Student Modal Elements
+        const addStudentModal = document.getElementById('add-student-modal');
+        const closeAddStudentModal = document.getElementById('close-add-student-modal');
+        const studentForm = document.getElementById('student-form');
+        const studentClassIdInput = document.getElementById('student-class-id');
+        const studentNameAddInput = document.getElementById('student-name-add');
+        const studentEmailAddInput = document.getElementById('student-email-add');
+        const studentPasswordAddInput = document.getElementById('student-password-add');
+        const saveStudentBtn = document.getElementById('save-student-btn');
+
+        // Practice Lesson Modal Elements
+        const practiceLessonModal = document.getElementById('practice-lesson-modal');
+        const closePracticeLessonModal = document.getElementById('close-practice-lesson-modal');
+        const practiceLessonTitle = document.getElementById('practice-lesson-title');
+        const practiceExercisesContainer = document.getElementById('practice-exercises');
+        const exerciseFeedback = document.getElementById('exercise-feedback');
+        const lessonCompletionScreen = document.getElementById('lesson-completion-screen');
+        const finalScoreSpan = document.getElementById('final-score');
+        const nextLessonBtn = document.getElementById('next-lesson-btn');
+        const practiceLevelReturnBtn = document.getElementById('practice-level-return-btn');
+
+        // Toast Container
+        const toastContainer = document.getElementById('toast-container');
+
+        // Page Nav Links
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageSections = document.querySelectorAll('section[data-page]');
+
+        // Fun Facts
+        const funFactElement = document.getElementById('fun-fact');
+        const chinaFunFacts = [
+            "Китай является одной из древнейших цивилизаций в мире, с письменной историей, насчитывающей более 3500 лет.",
+            "Великая Китайская стена — самое длинное искусственное сооружение в мире, ее длина составляет более 21 000 километров.",
+            "Бумагу, порох, компас и книгопечатание — четыре величайших изобретения, появившихся в Китае.",
+            "Китайский дракон — символ удачи, силы и доброты, а не зла, как в западной культуре.",
+            "В Китае существует более 200 диалектов китайского языка, но путунхуа (мандаринский) является официальным языком.",
+            "Панды — национальное сокровище Китая, и они обитают только в горных районах Сычуани.",
+            "Чай был случайно обнаружен китайским императором Шэнь-Нуном более 5000 лет назад.",
+            "Суп из акульих плавников, несмотря на свою популярность, вызывает опасения из-за воздействия на популяцию акул.",
+            "Традиционный китайский Новый год отмечается по лунному календарю и может выпадать на период с конца января до середины февраля.",
+            "Китай является крупнейшим производителем и потребителем чая в мире."
+        ];
+
+        // MOCK DATA HELPER FUNCTIONS
+        function generateId() {
+            return '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem(USERS_KEY, JSON.stringify(allUsers));
+            localStorage.setItem(TEACHERS_KEY, JSON.stringify(allTeachers));
+            localStorage.setItem(CLASSES_KEY, JSON.stringify(allClasses));
+            localStorage.setItem(LESSONS_KEY, JSON.stringify(allLessons));
+            localStorage.setItem(RESOURCES_KEY, JSON.stringify(allResources));
+            localStorage.setItem(PRACTICE_PROGRESS_KEY, JSON.stringify(practiceProgress));
+            localStorage.setItem(QUESTIONS_KEY, JSON.stringify(allQuestions));
+            // currentUser is managed separately to avoid issues with localStorage serialization
+        }
+
+        function loadInitialData() {
+            // Check for existing user
+            const savedUser = localStorage.getItem(CURRENT_USER_KEY);
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                } catch (e) {
+                    console.error("Error parsing currentUser from localStorage:", e);
+                    localStorage.removeItem(CURRENT_USER_KEY);
+                    currentUser = null;
+                }
+            }
+
+            // Seed mock data if empty
+            if (allUsers.length === 0) {
+                allUsers.push({ id: generateId(), name: 'Admin', email: 'admin@school.com', password: 'admin123', role: 'admin', avatar: 'https://via.placeholder.com/40/cccccc/ffffff?text=A' });
+                allUsers.push({ id: generateId(), name: 'Teacher A', email: 'teacherA@school.com', password: 'password', role: 'teacher', avatar: 'https://via.placeholder.com/40/a78bfa/ffffff?text=TA' });
+                allUsers.push({ id: generateId(), name: 'Student 1', email: 'student1@school.com', password: 'password', role: 'student', avatar: 'https://via.placeholder.com/40/60a5fa/ffffff?text=S1' });
+            }
+
+            if (allTeachers.length === 0) {
+                allTeachers.push({ id: generateId(), name: 'Ли Вэй', title: 'Старший преподаватель', experience: '10 лет', education: 'Пекинский университет', specialization: 'Современный китайский язык', avatar: 'https://via.placeholder.com/120/f87171/ffffff?text=LW' });
+                allTeachers.push({ id: generateId(), name: 'Чжао Ли', title: 'Преподаватель', experience: '5 лет', education: 'Шанхайский университет', specialization: 'Разговорный китайский', avatar: 'https://via.placeholder.com/120/fb923c/ffffff?text=ZL' });
+            }
+
+            if (allClasses.length === 0) {
+                allClasses.push({ id: generateId(), name: 'Начальный уровень', description: 'Знакомство с основами китайского языка.', teacherId: allTeachers[0].id });
+                allClasses.push({ id: generateId(), name: 'Базовый уровень', description: 'Развитие навыков чтения и письма.', teacherId: allTeachers[1].id });
+            }
+
+            if (allLessons.length === 0) {
+                allLessons.push({ id: generateId(), title: 'Приветствия и знакомства', time: 'Понедельник 16:00', classId: allClasses[0].id, teacherId: allTeachers[0].id });
+                allLessons.push({ id: generateId(), title: 'Числительные и счет', time: 'Среда 17:00', classId: allClasses[0].id, teacherId: allTeachers[0].id });
+                allLessons.push({ id: generateId(), title: 'Повседневные фразы', time: 'Вторник 18:00', classId: allClasses[1].id, teacherId: allTeachers[1].id });
+            }
+
+            if (allResources.length === 0) {
+                allResources.push({ id: generateId(), title: 'Словарь HSK', url: 'https://www.hsk.com/dictionary', description: 'Официальный словарь HSK.' });
+                allResources.push({ id: generateId(), title: 'YouTube канал "ChinesePod"', url: 'https://www.youtube.com/user/ChinesePod', description: 'Уроки китайского на YouTube.' });
+            }
+
+            if (!allQuestions || allQuestions.length === 0) {
+                 allQuestions.push({ id: generateId(), question: 'Как правильно произносить "你好"?', answer: '你好 (nǐ hǎo) произносится как "ни хао", с восходящим тоном на "ни" и нисходяще-восходящим на "хао".', askedBy: allUsers[2].id, answeredBy: allUsers[1].id, answeredAt: Date.now() });
+                 allQuestions.push({ id: generateId(), question: 'Какое самое сложное в китайском языке?', answer: 'Многие считают тона и иероглифы самыми сложными аспектами, но с практикой все становится доступнее!', askedBy: allUsers[0].id, answeredBy: allUsers[0].id, answeredAt: Date.now() });
+            }
+
+            // Practice Lessons Structure (Simplified for mock)
+            if (Object.keys(practiceProgress).length === 0) {
+                practiceProgress = {
+                    'level_0': { name: 'Начальный', unlocked: true, progress: 0, lessons: { 'lesson_0_0': { name: 'Приветствия', completed: false, score: 0, exercises: [] }, 'lesson_0_1': { name: 'Простые фразы', completed: false, score: 0, exercises: [] } } },
+                    'level_1': { name: 'Базовый', unlocked: false, progress: 0, lessons: { 'lesson_1_0': { name: 'Числительные', completed: false, score: 0, exercises: [] }, 'lesson_1_1': { name: 'Цвета', completed: false, score: 0, exercises: [] } } }
+                };
+            }
+
+            saveToLocalStorage();
+            updateAuthButtons();
+            updateUserProfile();
+            updateTheme();
+            populateClassTeacherSelect();
+            renderPage(currentView || 'home');
+            displayFunFact();
+        }
+
+        // UI Rendering Functions
+
+        function renderPage(pageName) {
+            currentView = pageName;
+            pageSections.forEach(section => {
+                if (section.getAttribute('data-page') === pageName) {
+                    section.classList.remove('hidden', 'animate-fadeIn', 'animate-scaleIn'); // Remove animation classes first
+                    section.classList.add('animate-fadeIn'); // Add enter animation class
+                    section.style.display = 'block';
+                    loadPageContent(pageName);
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+            updateNavLinks(pageName);
+            feather.replace(); // Re-render icons
+            loadingSpinner.style.display = 'none';
+        }
+
+        function loadPageContent(pageName) {
+            switch (pageName) {
+                case 'home':
+                    break;
+                case 'teachers':
+                    renderTeachers();
+                    break;
+                case 'classes':
+                    renderClasses();
+                    break;
+                case 'lessons':
+                    renderLessons();
+                    break;
+                case 'practice':
+                    renderPracticeLevels();
+                    break;
+                case 'resources':
+                    renderResources();
+                    break;
+                default:
+                    break;
+            }
+            // Ensure spinner is hidden when content is loaded
+            loadingSpinner.style.display = 'none';
+        }
+
+        function updateNavLinks(activePage) {
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-page') === activePage) {
+                    link.classList.add('active');
+                    link.classList.add('font-bold'); // Make active link bold
+                } else {
+                    link.classList.remove('active');
+                    link.classList.remove('font-bold');
+                }
+            });
+        }
+
+        function displayFunFact() {
+            if (funFactElement) {
+                const randomIndex = Math.floor(Math.random() * chinaFunFacts.length);
+                funFactElement.textContent = chinaFunFacts[randomIndex];
+            }
+        }
+
+        function renderTeachers() {
+            const teachersGrid = document.getElementById('teachers-grid');
+            teachersGrid.innerHTML = ''; // Clear existing
+            const isAdmin = currentUser && currentUser.role === 'admin';
+
+            // Add "Add Teacher" button for admin
+            if (isAdmin) {
+                const addButtonHtml = `
+                    <div class="text-center p-6 bg-card rounded-lg shadow-lg border-2 border-dashed border-primary border-opacity-50 hover:border-opacity-100 cursor-pointer flex items-center justify-center animate-pulse" id="add-teacher-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <span class="text-xl font-semibold text-primary dark:text-primary">Добавить Учителя</span>
+                    </div>
+                `;
+                teachersGrid.insertAdjacentHTML('beforeend', addButtonHtml);
+                document.getElementById('add-teacher-btn').addEventListener('click', () => openAddEditTeacherModal());
+            }
+
+            allTeachers.forEach(teacher => {
+                const teacherCardHtml = `
+                    <div class="bg-card p-6 rounded-lg shadow-lg card text-center animate-slideUp">
+                        <img src="${teacher.avatar}" alt="${teacher.name}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-primary border-opacity-50">
+                        <h3 class="text-2xl font-bold text-primary mb-2">${teacher.name}</h3>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-3">${teacher.title}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">${teacher.experience}</p>
+                        <div class="flex justify-center space-x-4">
+                            <button class="btn btn-outline-primary px-3 py-2 text-sm view-teacher-btn" data-teacher-id="${teacher.id}">Подробнее</button>
+                            ${isAdmin ? `<button class="btn btn-secondary px-3 py-2 text-sm edit-teacher-btn" data-teacher-id="${teacher.id}">Редактировать</button>` : ''}
+                            ${isAdmin ? `<button class="btn btn-accent px-3 py-2 text-sm delete-teacher-btn" data-teacher-id="${teacher.id}">Удалить</button>` : ''}
+                        </div>
+                    </div>
+                `;
+                teachersGrid.insertAdjacentHTML('beforeend', teacherCardHtml);
+            });
+
+            // Add event listeners for buttons
+            document.querySelectorAll('.view-teacher-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const teacherId = e.target.getAttribute('data-teacher-id');
+                    openTeacherInfoModal(teacherId);
+                });
+            });
+            if (isAdmin) {
+                document.querySelectorAll('.edit-teacher-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const teacherId = e.target.getAttribute('data-teacher-id');
+                        openAddEditTeacherModal(teacherId);
+                    });
+                });
+                document.querySelectorAll('.delete-teacher-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const teacherId = e.target.getAttribute('data-teacher-id');
+                        deleteTeacher(teacherId);
+                    });
+                });
+            }
+        }
+
+
+        function renderClasses() {
+            const classesGrid = document.getElementById('classes-grid');
+            classesGrid.innerHTML = ''; // Clear existing
+            const userRole = currentUser ? currentUser.role : 'guest';
+
+             // Add "Add Class" button for admin
+            if (userRole === 'admin') {
+                const addButtonHtml = `
+                    <div class="text-center p-6 bg-card rounded-lg shadow-lg border-2 border-dashed border-primary border-opacity-50 hover:border-opacity-100 cursor-pointer flex items-center justify-center animate-pulse" id="add-class-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <span class="text-xl font-semibold text-primary dark:text-primary">Добавить Класс</span>
+                    </div>
+                `;
+                classesGrid.insertAdjacentHTML('beforeend', addButtonHtml);
+                document.getElementById('add-class-btn').addEventListener('click', () => openAddEditClassModal());
+            }
+
+            allClasses.forEach(classItem => {
+                const teacher = allTeachers.find(t => t.id === classItem.teacherId);
+                const teacherName = teacher ? teacher.name : 'Не назначен';
+                const classHtml = `
+                    <div class="bg-card p-6 rounded-lg shadow-lg card text-center animate-slideUp">
+                        <h3 class="text-2xl font-bold text-primary mb-3">${classItem.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">${classItem.description}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Учитель: <span class="font-medium">${teacherName}</span></p>
+                        <div class="flex justify-center space-x-4">
+                            ${(userRole === 'teacher' || userRole === 'admin') ? `<button class="btn btn-secondary px-3 py-2 text-sm add-student-btn" data-class-id="${classItem.id}">Добавить Ученика</button>` : ''}
+                            ${userRole === 'admin' ? `<button class="btn btn-outline-primary px-3 py-2 text-sm edit-class-btn" data-class-id="${classItem.id}">Редактировать</button>` : ''}
+                            ${userRole === 'admin' ? `<button class="btn btn-accent px-3 py-2 text-sm delete-class-btn" data-class-id="${classItem.id}">Удалить</button>` : ''}
+                        </div>
+                        ${classItem.students && classItem.students.length > 0 ? `
+                            <div class="mt-6 border-t pt-4 border-gray-200 dark:border-gray-700">
+                                <h4 class="text-lg font-bold text-secondary mb-3">Ученики:</h4>
+                                <ul class="flex flex-wrap justify-center gap-2">
+                                    ${classItem.students.slice(0, 5).map(studentId => { // Show first 5 students
+                                        const student = allUsers.find(u => u.id === studentId);
+                                        return student ? `<li class="px-3 py-1 bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 rounded-full text-xs">${student.name}</li>` : '';
+                                    }).join('')}
+                                    ${classItem.students.length > 5 ? `<li class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-xs">+${classItem.students.length - 5}</li>` : ''}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                classesGrid.insertAdjacentHTML('beforeend', classHtml);
+            });
+
+            // Add event listeners
+            if (userRole === 'teacher' || userRole === 'admin') {
+                 document.querySelectorAll('.add-student-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const classId = e.target.getAttribute('data-class-id');
+                        openAddStudentModal(classId);
+                    });
+                });
+            }
+            if (userRole === 'admin') {
+                 document.querySelectorAll('.edit-class-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const classId = e.target.getAttribute('data-class-id');
+                        openAddEditClassModal(classId);
+                    });
+                });
+                 document.querySelectorAll('.delete-class-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const classId = e.target.getAttribute('data-class-id');
+                        deleteClass(classId);
+                    });
+                });
+            }
+        }
+
+
+        function renderLessons() {
+            const lessonsList = document.getElementById('lessons-list');
+            lessonsList.innerHTML = ''; // Clear existing
+            const userRole = currentUser ? currentUser.role : 'guest';
+
+             // Add "Add Lesson" button for admin or teachers
+            if (userRole === 'admin' || userRole === 'teacher') {
+                const addButtonHtml = `
+                    <div class="text-center p-6 bg-card rounded-lg shadow-lg border-2 border-dashed border-primary border-opacity-50 hover:border-opacity-100 cursor-pointer flex items-center justify-center animate-pulse" id="add-lesson-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <span class="text-xl font-semibold text-primary dark:text-primary">Добавить Занятие</span>
+                    </div>
+                `;
+                lessonsList.insertAdjacentHTML('beforeend', addButtonHtml);
+                document.getElementById('add-lesson-btn').addEventListener('click', () => openAddEditLessonModal());
+            }
+
+            allLessons.forEach(lesson => {
+                const teacher = allTeachers.find(t => t.id === lesson.teacherId);
+                const classItem = allClasses.find(c => c.id === lesson.classId);
+                const teacherName = teacher ? teacher.name : 'Не назначен';
+                const className = classItem ? classItem.name : 'Не назначен';
+
+                const lessonHtml = `
+                    <li class="bg-card p-5 rounded-lg shadow-lg card flex flex-col md:flex-row md:items-center justify-between animate-slideUp">
+                        <div>
+                            <h4 class="text-xl font-bold text-secondary mb-2">${lesson.title}</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-1">Класс: <span class="font-medium">${className}</span></p>
+                            <p class="text-gray-600 dark:text-gray-300 mb-1">Учитель: <span class="font-medium">${teacherName}</span></p>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">${lesson.time}</p>
+                        </div>
+                        ${userRole === 'admin' ? `
+                            <div class="mt-4 md:mt-0 flex space-x-2">
+                                <button class="btn btn-outline-primary px-3 py-2 text-sm edit-lesson-btn" data-lesson-id="${lesson.id}">Редактировать</button>
+                                <button class="btn btn-accent px-3 py-2 text-sm delete-lesson-btn" data-lesson-id="${lesson.id}">Удалить</button>
+                            </div>
+                        ` : ''}
+                    </li>
+                `;
+                lessonsList.insertAdjacentHTML('beforeend', lessonHtml);
+            });
+
+            // Add event listeners for admin
+            if (userRole === 'admin') {
+                document.querySelectorAll('.edit-lesson-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const lessonId = e.target.getAttribute('data-lesson-id');
+                        openAddEditLessonModal(lessonId);
+                    });
+                });
+                document.querySelectorAll('.delete-lesson-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const lessonId = e.target.getAttribute('data-lesson-id');
+                        deleteLesson(lessonId);
+                    });
+                });
+            }
+        }
+
+
+        function renderPracticeLevels() {
+            const practiceContent = document.getElementById('practice-content');
+            practiceContent.innerHTML = ''; // Clear existing
+
+            const sortedLevels = Object.keys(practiceProgress).sort((a, b) => parseInt(a.split('_')[1]) - parseInt(b.split('_')[1]));
+
+            sortedLevels.forEach(levelKey => {
+                const level = practiceProgress[levelKey];
+                const levelCompletedPercentage = level.progress; // Assuming progress is 0-100
+
+                const levelHtml = `
+                    <div class="relative p-8 my-8 rounded-xl shadow-xl card ${level.unlocked ? 'cursor-pointer hover:shadow-2xl' : 'opacity-70 cursor-not-allowed'}" data-level-key="${levelKey}" onclick="${level.unlocked ? `openPracticeLevel('${levelKey}')` : ''}">
+                        <div class="absolute top-4 right-4 text-sm font-medium text-white px-3 py-1 rounded-full ${level.progress === 100 ? 'bg-green-500' : 'bg-blue-500'}">${level.progress === 100 ? 'Завершено' : `${level.progress}%`}</div>
+                        <h3 class="text-3xl font-bold text-primary mb-4">${level.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">Изучите основы и продвинутые структуры китайского языка.</p>
+                        ${!level.unlocked ? `<div class="absolute inset-0 bg-gray-800 bg-opacity-70 rounded-xl flex items-center justify-center text-white text-xl font-bold">Заблокировано</div>` : ''}
+                        <div class="w-full h-3 bg-primary bg-opacity-20 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary rounded-full transition-all duration-500" style="width: ${level.progress}%;"></div>
+                        </div>
+                    </div>
+                `;
+                practiceContent.insertAdjacentHTML('beforeend', levelHtml);
+            });
+        }
+
+        function openPracticeLevel(levelKey) {
+            const level = practiceProgress[levelKey];
+            const practiceContent = document.getElementById('practice-content');
+            practiceContent.innerHTML = ''; // Clear levels and show lessons
+
+            // Back button
+            practiceContent.insertAdjacentHTML('beforeend', `
+                <button class="btn btn-outline-primary mb-8" onclick="renderPracticeLevels()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    Назад к уровням
+                </button>
+            `);
+
+            const lessonListHtml = Object.keys(level.lessons).map(lessonKey => {
+                const lesson = level.lessons[lessonKey];
+                const lessonStatus = lesson.completed ? 'bg-green-500' : 'bg-gray-400 dark:bg-gray-700';
+                const lessonCursor = lesson.completed ? 'cursor-default' : 'cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-800';
+                return `
+                    <li class="bg-card p-5 rounded-lg shadow-lg card mb-4 flex items-center justify-between ${lessonCursor}"
+                        data-level-key="${levelKey}"
+                        data-lesson-key="${lessonKey}"
+                        onclick="${lesson.completed ? '' : `openPracticeLesson('${levelKey}', '${lessonKey}')`}">
+                        <span>${lesson.name}</span>
+                        <span class="h-3 w-3 rounded-full ${lessonStatus}"></span>
+                    </li>
+                `;
+            }).join('');
+
+            practiceContent.insertAdjacentHTML('beforeend', `
+                <h2 class="text-4xl font-bold text-primary mb-8 text-center">${level.name}</h2>
+                <ul class="max-w-2xl mx-auto">${lessonListHtml}</ul>
+            `);
+            feather.replace();
+        }
+
+        function openPracticeLesson(levelKey, lessonKey) {
+            const lessonData = practiceProgress[levelKey].lessons[lessonKey];
+            const currentLevel = practiceProgress[levelKey];
+
+            practiceLessonTitle.textContent = lessonData.name;
+            practiceExercisesContainer.innerHTML = '';
+            exerciseFeedback.classList.add('hidden');
+            lessonCompletionScreen.classList.add('hidden');
+            practiceLessonModal.style.display = 'flex'; // Show modal
+            setTimeout(() => {
+                document.querySelector('#practice-lesson-content').classList.add('active'); // Trigger animation
+            }, 10);
+
+            // Mocking exercises for now
+            const mockExercises = [
+                { type: 'translate', chinese: '你好', english: 'Hello' },
+                { type: 'choose_word', sentence: '我爱学 [ __ ] 语。', options: ['汉语', '英语', '俄语'] },
+                { type: 'translate', chinese: '谢谢', english: 'Thank you' }
+            ];
+
+            lessonData.exercises = mockExercises; // Store mock exercises
+            lessonData.currentExerciseIndex = 0;
+            lessonData.score = 0;
+            lessonData.totalExercises = mockExercises.length;
+
+            renderExercise(lessonData.currentExerciseIndex);
+        }
+
+        function renderExercise(index) {
+            const lesson = practiceProgress[levelKeyFromModal].lessons[lessonKeyFromModal]; // Need to extract these from closure or pass
+            if (!lesson) return;
+
+            const exercise = lesson.exercises[index];
+            practiceExercisesContainer.innerHTML = ''; // Clear previous exercise
+
+            let exerciseHtml = '';
+            switch (exercise.type) {
+                case 'translate':
+                    exerciseHtml = `
+                        <div class="mb-6 p-6 bg-card rounded-lg shadow-md animate-scaleIn">
+                            <p class="text-2xl font-semibold text-secondary mb-4">Переведите:</p>
+                            <p class="text-3xl font-bold text-primary mb-6">${exercise.chinese}</p>
+                            <input type="text" class="input-field text-xl" placeholder="Ваш перевод..." id="translate-input">
+                        </div>
+                    `;
+                    break;
+                case 'choose_word':
+                    const optionsHtml = exercise.options.map((opt, i) => `
+                        <button class="btn btn-outline-primary mr-4 mb-4" data-option-index="${i}">${opt}</button>
+                    `).join('');
+                    exerciseHtml = `
+                        <div class="mb-6 p-6 bg-card rounded-lg shadow-md animate-scaleIn">
+                            <p class="text-2xl font-semibold text-secondary mb-4">Выберите правильное слово:</p>
+                            <p class="text-xl mb-6">${exercise.sentence.replace('[ __ ]', '________')}</p>
+                            <div class="flex flex-wrap">${optionsHtml}</div>
+                        </div>
+                    `;
+                    break;
+                // Add more exercise types if needed
+            }
+            practiceExercisesContainer.innerHTML = exerciseHtml;
+            exerciseFeedback.classList.add('hidden'); // Hide feedback before new exercise
+
+            // Add event listeners for exercise interaction
+             if (exercise.type === 'translate') {
+                const translateInput = document.getElementById('translate-input');
+                translateInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        submitAnswer(exercise, translateInput.value);
+                    }
+                });
+            } else if (exercise.type === 'choose_word') {
+                document.querySelectorAll('#practice-exercises button[data-option-index]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const selectedIndex = parseInt(button.getAttribute('data-option-index'));
+                        submitAnswer(exercise, exercise.options[selectedIndex]);
+                    });
+                });
+            }
+
+            feather.replace();
+        }
+
+        function submitAnswer(exercise, userAnswer) {
+            const lesson = practiceProgress[levelKeyFromModal].lessons[lessonKeyFromModal];
+            let isCorrect = false;
+
+            switch (exercise.type) {
+                case 'translate':
+                    isCorrect = userAnswer.trim().toLowerCase() === exercise.english.toLowerCase();
+                    break;
+                case 'choose_word':
+                    isCorrect = userAnswer === exercise.correctAnswer; // Assuming 'correctAnswer' property exists for choose_word
+                    break;
+            }
+
+            if (isCorrect) {
+                lesson.score += 1;
+                exercise.userAnswer = userAnswer;
+                exercise.isCorrect = true;
+                exerciseFeedback.innerHTML = `<p class="text-green-500 font-bold">Верно! 🎉</p>`;
+                exerciseFeedback.classList.remove('hidden');
+            } else {
+                exercise.userAnswer = userAnswer;
+                exercise.isCorrect = false;
+                exerciseFeedback.innerHTML = `<p class="text-red-500 font-bold">Неверно. Правильный ответ: ${exercise.english || exercise.correctAnswer}</p>`;
+                exerciseFeedback.classList.remove('hidden');
+            }
+
+            // Disable input/buttons after answer
+            if (exercise.type === 'translate') {
+                document.getElementById('translate-input').disabled = true;
+            } else {
+                document.querySelectorAll('#practice-exercises button').forEach(btn => btn.disabled = true);
+            }
+
+            // Move to next exercise or lesson completion
+            setTimeout(() => {
+                lesson.currentExerciseIndex++;
+                if (lesson.currentExerciseIndex < lesson.totalExercises) {
+                    renderExercise(lesson.currentExerciseIndex);
+                } else {
+                    lesson.completed = true; // Mark lesson as completed
+                    const totalPossibleScore = lesson.totalExercises;
+                    const percentage = Math.round((lesson.score / totalPossibleScore) * 100);
+                    lesson.scorePercentage = percentage;
+
+                    // Update level progress
+                    const levelLessons = Object.values(practiceProgress[levelKeyFromModal].lessons);
+                    const completedLessons = levelLessons.filter(l => l.completed).length;
+                    practiceProgress[levelKeyFromModal].progress = Math.round((completedLessons / levelLessons.length) * 100);
+
+                    displayLessonCompletion(lesson.score, totalPossibleScore);
+                    saveToLocalStorage();
+                }
+            }, 1500); // Delay to show feedback
+        }
+
+        function displayLessonCompletion(score, total) {
+            finalScoreSpan.textContent = `${score} / ${total}`;
+            lessonCompletionScreen.classList.remove('hidden');
+            practiceExercisesContainer.innerHTML = ''; // Clear exercises
+            exerciseFeedback.classList.add('hidden');
+
+            const currentLessonKey = lessonKeyFromModal; // Need access to these
+            const nextLessonKey = findNextLessonKey(levelKeyFromModal, currentLessonKey);
+
+            if (nextLessonKey && practiceProgress[levelKeyFromModal].lessons[nextLessonKey]) {
+                nextLessonBtn.onclick = () => openPracticeLesson(levelKeyFromModal, nextLessonKey);
+                nextLessonBtn.textContent = `К уроку "${practiceProgress[levelKeyFromModal].lessons[nextLessonKey].name}"`;
+            } else {
+                nextLessonBtn.textContent = 'К уровням';
+                nextLessonBtn.onclick = () => {
+                    practiceLessonModal.style.display = 'none';
+                    document.querySelector('#practice-lesson-content').classList.remove('active');
+                    renderPracticeLevels(); // Back to levels
+                };
+
+                // Attempt to unlock next level if current level is 100% complete
+                 const currentLevel = practiceProgress[levelKeyFromModal];
+                 if (currentLevel.progress === 100) {
+                     const currentLevelIndex = parseInt(levelKeyFromModal.split('_')[1]);
+                     const nextLevelKey = `level_${currentLevelIndex + 1}`;
+                     if (practiceProgress[nextLevelKey] && !practiceProgress[nextLevelKey].unlocked) {
+                         practiceProgress[nextLevelKey].unlocked = true;
+                         showNotification('success', 'Новый уровень разблокирован!');
+                     }
+                 }
+            }
+             practiceLevelReturnBtn.onclick = () => {
+                practiceLessonModal.style.display = 'none';
+                document.querySelector('#practice-lesson-content').classList.remove('active');
+                renderPracticeLevels();
+            };
+        }
+
+        function findNextLessonKey(levelKey, currentLessonKey) {
+            const levelLessons = practiceProgress[levelKey].lessons;
+            const lessonKeys = Object.keys(levelLessons);
+            const currentIndex = lessonKeys.indexOf(currentLessonKey);
+            if (currentIndex < lessonKeys.length - 1) {
+                return lessonKeys[currentIndex + 1];
+            }
+            return null; // No next lesson in this level
+        }
+
+
+        function renderResources() {
+            const resourcesList = document.getElementById('resources-list');
+            resourcesList.innerHTML = ''; // Clear existing
+            const userRole = currentUser ? currentUser.role : 'guest';
+
+             // Add "Add Resource" button for admin
+            if (userRole === 'admin') {
+                const addButtonHtml = `
+                    <div class="text-center p-6 bg-card rounded-lg shadow-lg border-2 border-dashed border-primary border-opacity-50 hover:border-opacity-100 cursor-pointer flex items-center justify-center animate-pulse" id="add-resource-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <span class="text-xl font-semibold text-primary dark:text-primary">Добавить Ресурс</span>
+                    </div>
+                `;
+                resourcesList.insertAdjacentHTML('beforeend', addButtonHtml);
+                document.getElementById('add-resource-btn').addEventListener('click', () => openAddEditResourceModal());
+            }
+
+            allResources.forEach(resource => {
+                const resourceHtml = `
+                    <li class="bg-card p-5 rounded-lg shadow-lg card flex items-center justify-between animate-slideUp">
+                        <div>
+                            <h4 class="text-xl font-bold text-secondary mb-2">${resource.title}</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">${resource.description}</p>
+                        </div>
+                        <a href="${resource.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary px-4 py-2 text-sm flex items-center space-x-2">
+                            Перейти
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2v7.586m7 0v10--------------------------"></path><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path></svg>
+                        </a>
+                    </li>
+                `;
+                resourcesList.insertAdjacentHTML('beforeend', resourceHtml);
+            });
+        }
+
+        // Modal Management
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                // Trigger animation
+                setTimeout(() => {
+                    modal.querySelector('.modal-content').classList.add('active');
+                    modal.classList.add('active');
+                }, 10);
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.classList.remove('active');
+                modal.classList.remove('active');
+                // Remove display property after transition
+                modal.addEventListener('transitionend', () => {
+                     if (!modal.classList.contains('active')) { // Check if it's actually closing
+                        modal.style.display = 'none';
+                        // Reset form states
+                        resetForm(modal.querySelector('form'));
+                        // Clear specific modal content if necessary
+                        if (modalId === 'auth-modal') {
+                            closeAuthModalForms();
+                        }
+                     }
+                }, { once: true }); // Ensure it only runs once
+            }
+        }
+
+        function closeAuthModalForms() {
+             loginForm.classList.remove('hidden');
+             registerForm.classList.add('hidden');
+             forgotPasswordForm.classList.add('hidden');
+        }
+
+        function resetForm(form) {
+            if (!form) return;
+            form.reset();
+            // Clear any hidden inputs used for IDs, etc.
+            const hiddenInputs = form.querySelectorAll('input[type="hidden"]');
+            hiddenInputs.forEach(input => input.value = '');
+            // Clear specific modal content like answer/question fields
+            if (form.id === 'teacher-form') {
+                teacherIdInput.value = '';
+            }
+            if (form.id === 'class-form') {
+                classIdInput.value = '';
+            }
+             if (form.id === 'student-form') {
+                studentClassIdInput.value = '';
+            }
+        }
+
+        // Auth Modals
+        function showLoginModal() {
+            closeAuthModalForms();
+            loginForm.classList.remove('hidden');
+            openModal('auth-modal');
+        }
+
+        function openTeacherInfoModal(teacherId) {
+            const teacher = allTeachers.find(t => t.id === teacherId);
+            if (!teacher) return showNotification('error', 'Учитель не найден!');
+
+            document.getElementById('modal-teacher-name').textContent = teacher.name;
+            document.getElementById('modal-teacher-title').textContent = teacher.title;
+            document.getElementById('modal-teacher-experience').textContent = teacher.experience;
+            document.getElementById('modal-teacher-education').textContent = teacher.education;
+            document.getElementById('modal-teacher-specialization').textContent = teacher.specialization;
+            document.getElementById('modal-teacher-avatar').src = teacher.avatar;
+
+            openModal('teacher-info-modal');
+        }
+
+
+        function openAddEditTeacherModal(teacherId = null) {
+            resetForm(teacherForm);
+            if (teacherId) {
+                addEditTeacherTitle.textContent = 'Редактировать Учителя';
+                const teacher = allTeachers.find(t => t.id === teacherId);
+                if (teacher) {
+                    teacherIdInput.value = teacher.id;
+                    teacherNameInput.value = teacher.name;
+                    teacherTitleInput.value = teacher.title;
+                    teacherExperienceInput.value = teacher.experience;
+                    teacherEducationInput.value = teacher.education;
+                    teacherSpecializationInput.value = teacher.specialization;
+                    teacherAvatarInput.value = teacher.avatar;
+                }
+            } else {
+                addEditTeacherTitle.textContent = 'Добавить Учителя';
+            }
+            openModal('add-edit-teacher-modal');
+        }
+
+        function openAddEditClassModal(classId = null) {
+            resetForm(classForm);
+            populateClassTeacherSelect(); // Ensure select is populated
+            if (classId) {
+                addEditClassTitle.textContent = 'Редактировать Класс';
+                const classItem = allClasses.find(c => c.id === classId);
+                if (classItem) {
+                    classIdInput.value = classItem.id;
+                    classNameInput.value = classItem.name;
+                    classDescriptionInput.value = classItem.description;
+                    classTeacherIdInput.value = classItem.teacherId;
+                }
+            } else {
+                addEditClassTitle.textContent = 'Добавить Класс';
+            }
+            openModal('add-edit-class-modal');
+        }
+
+        function openAddStudentModal(classId) {
+            resetForm(studentForm);
+            studentClassIdInput.value = classId;
+            openModal('add-student-modal');
+        }
+
+       // Q&A Modals
+       let currentQuestionForAnswer = null; // To store the question teacher/admin is answering
+       function openQaModal() {
+            qaDisplay.innerHTML = '<p class="text-center text-gray-500 py-4">Загрузка вопросов...</p>';
+            renderQAMessages();
+            answerQuestionForm.classList.add('hidden'); // Hide answer form by default
+
+            // Show "Ask Question" form for all logged in users
+            // Hide "Ask Question" form for admins if they are answering only
+            if (currentUser && currentUser.role === 'admin') {
+                 // Admins can both ask and answer, so no change needed
+            }
+            if (currentUser && currentUser.role === 'teacher') {
+                // Teachers can both ask and answer
+            } else if (!currentUser) {
+                // Guests can only ask
+            }
+
+            openModal('qa-modal');
+        }
+
+        function renderQAMessages() {
+            qaDisplay.innerHTML = ''; // Clear previous messages
+            if (allQuestions.length === 0) {
+                qaDisplay.innerHTML = '<p class="text-center text-gray-500 py-4">Пока нет вопросов. Станьте первым, кто задаст!</p>';
+                return;
+            }
+
+            allQuestions.forEach(q => {
+                const askedBy = allUsers.find(u => u.id === q.askedBy);
+                const answeredBy = allUsers.find(u => u.id === q.answeredBy);
+
+                const questionHtml = `
+                    <div class="mb-6 p-4 bg-gray-50 dark:bg-[#2b374a] rounded-lg shadow-sm animate-slideUp">
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-lg font-semibold text-primary flex-1">${q.question}</p>
+                            <span class="text-xs text-gray-500 ml-4">Спросил: ${askedBy ? askedBy.name : 'Гость'}</span>
+                        </div>
+                        ${q.answer ? `
+                            <div class="mt-3 p-4 bg-white dark:bg-[#1f2937] rounded-md border border-gray-200 dark:border-gray-700">
+                                <p class="text-gray-700 dark:text-gray-300">${q.answer}</p>
+                                <div class="text-right text-xs text-gray-500 mt-2">Ответил: ${answeredBy ? answeredBy.name : 'Учитель'}</div>
+                            </div>
+                        ` : (currentUser && (currentUser.role === 'admin' || currentUser.role === 'teacher') ? `
+                            <div class="mt-3 text-right">
+                                <button class="btn btn-secondary px-3 py-2 text-xs answer-question-btn" data-question-id="${q.id}">Ответить</button>
+                            </div>
+                        ` : '')}
+                    </div>
+                `;
+                qaDisplay.insertAdjacentHTML('beforeend', questionHtml);
+            });
+
+            // Add event listeners for answer buttons
+            document.querySelectorAll('.answer-question-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const questionId = e.target.getAttribute('data-question-id');
+                    currentQuestionForAnswer = allQuestions.find(q => q.id === questionId);
+                    displayAnswerForm(currentQuestionForAnswer);
+                });
+            });
+            feather.replace();
+        }
+
+       function displayAnswerForm(question) {
+           if (!question) {
+               answerQuestionForm.classList.add('hidden');
+               return;
+           }
+           questionToAnswer.textContent = question.question;
+           answerInput.value = ''; // Clear previous answer
+           answerQuestionForm.classList.remove('hidden');
+           // Scroll to the answer form
+           answerQuestionForm.scrollIntoView({ behavior: 'smooth' });
+       }
+
+
+        // Authentication and User Management
+        function updateAuthButtons() {
+            if (currentUser) {
+                authButtonsDiv.classList.add('hidden');
+                userProfileDiv.classList.remove('hidden');
+                userProfileDiv.classList.add('flex');
+                userName.textContent = currentUser.name;
+                userAvatar.src = currentUser.avatar;
+
+                // Mobile Version
+                loginMobileBtn.classList.add('hidden');
+                userProfileMobileDiv.classList.remove('hidden');
+                userProfileMobileDiv.classList.add('flex', 'flex-col', 'items-center');
+                userNameMobile.textContent = currentUser.name;
+                userAvatarMobile.src = currentUser.avatar;
+
+            } else {
+                authButtonsDiv.classList.remove('hidden');
+                authButtonsDiv.classList.add('flex');
+                userProfileDiv.classList.add('hidden');
+                userProfileDiv.classList.remove('flex');
+
+                // Mobile Version
+                loginMobileBtn.classList.remove('hidden');
+                userProfileMobileDiv.classList.add('hidden');
+                userProfileMobileDiv.classList.remove('flex', 'flex-col', 'items-center');
+            }
+        }
+
+        function updateUserProfile() {
+            // Logic to update profile details if needed
+        }
+
+        function loginUser(email, password) {
+            const user = allUsers.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    avatar: user.avatar
+                };
+                localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(currentUser));
+                showNotification('success', 'Добро пожаловать, ' + currentUser.name + '!');
+                updateAuthButtons();
+                renderPage(currentView); // Re-render page to show/hide admin/teacher elements
+                return true;
+            } else {
+                showNotification('error', 'Неверный email или пароль.');
+                return false;
+            }
+        }
+
+        function registerUser(name, email, password, role) {
+            if (allUsers.some(u => u.email === email)) {
+                showNotification('error', 'Этот email уже зарегистрирован.');
+                return false;
+            }
+            const newUser = {
+                id: generateId(),
+                name: name,
+                email: email,
+                password: password,
+                role: role,
+                avatar: `https://via.placeholder.com/40/60a5fa/ffffff?text=${name.charAt(0).toUpperCase()}${role === 'teacher' ? 'T' : role === 'admin' ? 'A' : 'S'}`
+            };
+            allUsers.push(newUser);
+            favoriteUser = newUser; // Create a fake favorite user for mock data
+            saveToLocalStorage();
+            showNotification('success', 'Регистрация успешна! Теперь вы можете войти.');
+            return true;
+        }
+
+          function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem(CURRENT_USER_KEY);
+            showNotification('info', 'Вы вышли из системы.');
+            updateAuthButtons();
+            renderPage(currentView); // Re-render page maybe to default to home page
+        }
+
+
+        // Theme Toggling
+        function updateTheme() {
+            const isDark = localStorage.getItem(THEME_KEY) === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            if (isDark) {
+                 themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.354 3.354C5.751 6.044 3 9.154 3 12s2.751 5.956 5.354 8.646a1.752 1.752 0 002.396.023A21.148 21.148 0 0012 16.31L13.605 15H17c5 0 5-5 5-5z" />
+                `;
+            } else {
+                 themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 18v1m-9-11h1m18 0h1M4.77 4.77l1.06 1.06M17.23 17.23l1.06 1.06M12 12a3 3 0 110-6 3 3 0 010 6z" />
+                 `;
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            localStorage.setItem(THEME_KEY, isDark ? 'light' : 'dark');
+            updateTheme();
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('translate-x-full');
+        }
+
+
+        // Navigation Handling
+        function navigateTo(pageName) {
+            loadingSpinner.style.display = 'flex'; // Show spinner
+            mobileMenu.classList.add('translate-x-full'); // Close mobile menu if open
+            renderPage(pageName);
+        }
+
+        // Toast Notifications
+        function showNotification(type, message, duration = 3000) {
+            const toastElement = document.createElement('div');
+            let bgColor = 'bg-green-500'; // success
+            let icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="23 3 12 14 8 10"></polyline></svg>';
+
+            if (type === 'error') {
+                bgColor = 'bg-red-500';
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+            } else if (type === 'info') {
+                bgColor = 'bg-blue-500';
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+            } else if (type === 'warning') {
+                bgColor = 'bg-yellow-500 text-black'; // Yellow needs black text for contrast
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.77 2.98h14.72a2 2 0 0 0 1.77-2.98L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12" y2="17"></line></svg>';
+            }
+
+            toastElement.className = `toast shadow-xl p-4 rounded-lg flex items-center ${bgColor} text-white mb-4 animate-fade-in-right`;
+            toastElement.innerHTML = `
+                <div class="flex items-center">
+                    ${icon}
+                    <span>${message}</span>
+                </div>
+            `;
+            toastContainer.appendChild(toastElement);
+
+            setTimeout(() => {
+                toastElement.remove();
+            }, duration);
+        }
+
+        // --- Form Handling ---
+
+        // Auth Form Submit
+        submitLoginBtn.addEventListener('click', () => {
+            const email = loginEmailInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+            if (email && password) {
+                if (loginUser(email, password)) {
+                    closeModal('auth-modal');
+                }
+            } else {
+                showNotification('warning', 'Пожалуйста, введите email и пароль.');
+            }
+        });
+
+        submitRegisterBtn.addEventListener('click', () => {
+            const name = registerNameInput.value.trim();
+            const email = registerEmailInput.value.trim();
+            const password = registerPasswordInput.value.trim();
+            const role = registerRoleInput.value;
+
+            if (name && email && password) {
+                if (registerUser(name, email, password, role)) {
+                    closeModal('auth-modal');
+                    // Optionally auto-login after registration
+                    loginUser(email, password);
+                }
+            } else {
+                showNotification('warning', 'Пожалуйста, заполните все поля.');
+            }
+        });
+
+        submitForgotPasswordBtn.addEventListener('click', () => {
+            const email = document.getElementById('forgot-email').value.trim();
+            if (email) {
+                // In a real app, this would send an email
+                showNotification('success', `Инструкции по восстановлению пароля отправлены на ${email} (имитация).`);
+                closeModal('auth-modal');
+            } else {
+                showNotification('warning', 'Пожалуйста, введите ваш email.');
+            }
+        });
+
+
+        // Q&A Form Submit
+        submitQuestionBtn.addEventListener('click', () => {
+            const questionText = questionInput.value.trim();
+            if (!questionText) {
+                showNotification('warning', 'Пожалуйста, введите ваш вопрос.');
+                return;
+            }
+            if (!currentUser) {
+                showNotification('warning', 'Пожалуйста, войдите, чтобы задать вопрос.');
+                return;
+            }
+
+            allQuestions.push({
+                id: generateId(),
+                question: questionText,
+                askedBy: currentUser.id,
+                askedAt: Date.now()
+            });
+            saveToLocalStorage();
+            questionInput.value = ''; // Clear input
+            renderQAMessages();
+            showNotification('success', 'Ваш вопрос успешно отправлен!');
+        });
+
+        submitAnswerBtn.addEventListener('click', () => {
+            const answerText = answerInput.value.trim();
+            if (!answerText) {
+                showNotification('warning', 'Пожалуйста, введите ваш ответ.');
+                return;
+            }
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'teacher')) {
+                showNotification('error', 'У вас нет прав отвечать на вопросы.');
+                return;
+            }
+            if (!currentQuestionForAnswer) {
+                 showNotification('error', 'Ошибка: Вопрос для ответа не найден.');
+                 return;
+            }
+
+            const questionIndex = allQuestions.findIndex(q => q.id === currentQuestionForAnswer.id);
+            if (questionIndex !== -1) {
+                allQuestions[questionIndex].answer = answerText;
+                allQuestions[questionIndex].answeredBy = currentUser.id;
+                allQuestions[questionIndex].answeredAt = Date.now();
+                saveToLocalStorage();
+                renderQAMessages();
+                answerInput.value = ''; // Clear input
+                answerQuestionForm.classList.add('hidden'); // Hide answer form
+                currentQuestionForAnswer = null;
+                showNotification('success', 'Ваш ответ успешно опубликован!');
+            } else {
+                 showNotification('error', 'Ошибка обновления вопроса.');
+            }
+        });
+
+
+        // Teacher Form Submit
+        teacherForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = teacherIdInput.value;
+            const name = teacherNameInput.value.trim();
+            const title = teacherTitleInput.value.trim();
+            const experience = teacherExperienceInput.value.trim();
+            const education = teacherEducationInput.value.trim();
+            const specialization = teacherSpecializationInput.value.trim();
+            const avatar = teacherAvatarInput.value.trim();
+
+            if (id) { // Editing existing teacher
+                const index = allTeachers.findIndex(t => t.id === id);
+                if (index !== -1) {
+                    allTeachers[index] = {
+                        id, name, title, experience, education, specialization, avatar
+                    };
+                    showNotification('success', `Учитель "${name}" обновлен.`);
+                }
+            } else { // Adding new teacher
+                const newTeacher = {
+                    id: generateId(),
+                    name, title, experience, education, specialization, avatar
+                };
+                allTeachers.push(newTeacher);
+                showNotification('success', `Учитель "${name}" добавлен.`);
+            }
+            saveToLocalStorage();
+            closeModal('add-edit-teacher-modal');
+            renderPage(currentView); // Re-render to update the teachers list
+        });
+
+        // Class Form Submit
+        classForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = classIdInput.value;
+            const name = classNameInput.value.trim();
+            const description = classDescriptionInput.value.trim();
+            const teacherId = classTeacherIdInput.value;
+
+            if (id) { // Editing existing class
+                 const index = allClasses.findIndex(c => c.id === id);
+                 if (index !== -1) {
+                     allClasses[index] = {
+                         ...allClasses[index], // Preserve students if any
+                         name, description, teacherId
+                     };
+                     showNotification('success', `Класс "${name}" обновлен.`);
+                 }
+            } else { // Adding new class
+                const newClass = {
+                    id: generateId(),
+                    name,
+                    description,
+                    teacherId,
+                    students: [] // Initialize with empty students array
+                };
+                allClasses.push(newClass);
+                showNotification('success', `Класс "${name}" добавлен.`);
+            }
+            saveToLocalStorage();
+            closeModal('add-edit-class-modal');
+            renderPage(currentView); // Re-render to update the classes list
+        });
+
+        // Student Form Submit
+        studentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const classId = studentClassIdInput.value;
+            const name = studentNameAddInput.value.trim();
+            const email = studentEmailAddInput.value.trim();
+            const password = studentPasswordAddInput.value.trim();
+
+            if (!classId) {
+                showNotification('error', 'Ошибка: Класс не определен.');
+                return;
+            }
+
+            // Check if user with this email already exists
+            let existingUser = allUsers.find(u => u.email === email);
+
+            if (existingUser && existingUser.role !== 'student') {
+                 showNotification('error', 'Пользователь с таким email уже существует и имеет другую роль. Невозможно добавить.');
+                 return;
+            }
+
+            let newStudentId;
+            if (existingUser) {
+                // User already exists, just add to class
+                newStudentId = existingUser.id;
+                 showNotification('info', `Ученик "${name}" уже зарегистрирован, добавлен в класс.`);
+            } else {
+                // Create a new student user
+                const newStudent = {
+                    id: generateId(),
+                    name,
+                    email,
+                    password,
+                    role: 'student',
+                    avatar: `https://via.placeholder.com/40/60a5fa/ffffff?text=${name.charAt(0).toUpperCase()}S`
+                };
+                allUsers.push(newStudent);
+                newStudentId = newStudent.id;
+                 showNotification('success', `Ученик "${name}" успешно зарегистрирован и добавлен.`);
+            }
+
+            // Add student to the class
+            const classIndex = allClasses.findIndex(c => c.id === classId);
+            if (classIndex !== -1) {
+                if (!allClasses[classIndex].students) {
+                    allClasses[classIndex].students = [];
+                }
+                if (!allClasses[classIndex].students.includes(newStudentId)) {
+                    allClasses[classIndex].students.push(newStudentId);
+                    saveToLocalStorage();
+                    closeModal('add-student-modal');
+                    renderPage(currentView); // Re-render classes list
+                } else {
+                    showNotification('warning', `Ученик "${name}" уже состоит в этом классе.`);
+                }
+            } else {
+                showNotification('error', 'Ошибка: Класс не найден.');
+            }
+        });
+
+
+        // --- Deletion Functions ---
+        function deleteTeacher(teacherId) {
+            if (!confirm('Вы уверены, что хотите удалить этого учителя? Связанные классы будут переназначены.')) return;
+
+            allTeachers = allTeachers.filter(t => t.id !== teacherId);
+            // Re-assign classes taught by this teacher
+            allClasses.forEach(c => {
+                if (c.teacherId === teacherId) {
+                    c.teacherId = null; // Or assign to a default teacher
+                }
+            });
+            saveToLocalStorage();
+            showNotification('success', 'Учитель удален.');
+            renderPage(currentView); // Re-render
+        }
+
+         function deleteClass(classId) {
+            if (!confirm('Вы уверены, что хотите удалить этот класс?')) return;
+
+            allClasses = allClasses.filter(c => c.id !== classId);
+            // Also remove students from this class (if we had student models here)
+            // For now, just remove class ID references if anywhere needed.
+            saveToLocalStorage();
+            showNotification('success', 'Класс удален.');
+            renderPage(currentView); // Re-render
+        }
+
+        function deleteLesson(lessonId) {
+             if (!confirm('Вы уверены, что хотите удалить это занятие?')) return;
+
+             allLessons = allLessons.filter(l => l.id !== lessonId);
+             saveToLocalStorage();
+             showNotification('success', 'Занятие удалено.');
+             renderPage(currentView);
+        }
+
+
+        // --- Helper Functions ---
+        function populateClassTeacherSelect() {
+            classTeacherIdInput.innerHTML = '<option value="">-- Выберите учителя --</option>'; // Reset
+            allTeachers.forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher.id;
+                option.textContent = teacher.name;
+                classTeacherIdInput.appendChild(option);
+            });
+        }
+
+        function toggleUserDropdown(event) {
+            userDropdown.classList.toggle('hidden');
+             // Prevent closing when clicking on user profile div itself
+            event.stopPropagation();
+        }
+
+        // --- Event Listeners ---
+        mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+        closeMobileMenu.addEventListener('click', toggleMobileMenu);
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.getAttribute('data-page');
+                navigateTo(page);
+                // Close mobile menu if it's open
+                if (!mobileMenu.classList.contains('translate-x-full')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
+
+        loginBtn.addEventListener('click', showLoginModal);
+        loginMobileBtn.addEventListener('click', showLoginModal);
+
+        closeAuthModal.addEventListener('click', () => closeModal('auth-modal'));
+        // Close modal when clicking outside content
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) closeModal('auth-modal');
+        });
+
+        showRegisterBtn.addEventListener('click', () => {
+            loginForm.classList.add('hidden');
+            forgotPasswordForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        });
+        showLoginBtn.addEventListener('click', () => {
+            registerForm.classList.add('hidden');
+            forgotPasswordForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+        forgotPasswordBtn.addEventListener('click', () => {
+            loginForm.classList.add('hidden');
+            registerForm.classList.add('hidden');
+            forgotPasswordForm.classList.remove('hidden');
+        });
+        showLoginFromForgotBtn.addEventListener('click', () => {
+            forgotPasswordForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Q&A Modal
+        qaBtn.addEventListener('click', openQaModal);
+        closeQaModal.addEventListener('click', () => closeModal('qa-modal'));
+        qaModal.addEventListener('click', (e) => {
+            if (e.target === qaModal) closeModal('qa-modal');
+        });
+
+        // Teacher Info Modal
+        closeTeacherInfoModal.addEventListener('click', () => closeModal('teacher-info-modal'));
+        teacherInfoModal.addEventListener('click', (e) => {
+            if (e.target === teacherInfoModal) closeModal('teacher-info-modal');
+        });
+
+        // Add/Edit Teacher Modal
+        closeAddEditTeacherModal.addEventListener('click', () => closeModal('add-edit-teacher-modal'));
+        addEditTeacherModal.addEventListener('click', (e) => {
+            if (e.target === addEditTeacherModal) closeModal('add-edit-teacher-modal');
+        });
+        addTeacherBtn.addEventListener('click', () => openAddEditTeacherModal()); // Open implicitly from Teachers page
+
+        // Add/Edit Class Modal
+        closeAddEditClassModal.addEventListener('click', () => closeModal('add-edit-class-modal'));
+        addEditClassModal.addEventListener('click', (e) => {
+            if (e.target === addEditClassModal) closeModal('add-edit-class-modal');
+        });
+        addClassBtn.addEventListener('click', () => openAddEditClassModal()); // Open implicitly from Classes page
+
+        // Add Student Modal
+        closeAddStudentModal.addEventListener('click', () => closeModal('add-student-modal'));
+        addStudentModal.addEventListener('click', (e) => {
+            if (e.target === addStudentModal) closeModal('add-student-modal');
+        });
+
+        // Practice Lesson Modal
+        closePracticeLessonModal.addEventListener('click', () => {
+            practiceLessonModal.style.display = 'none';
+            document.querySelector('#practice-lesson-content').classList.remove('active');
+        });
+        practiceLessonModal.addEventListener('click', (e) => {
+             if (e.target === practiceLessonModal) {
+                 practiceLessonModal.style.display = 'none';
+                 document.querySelector('#practice-lesson-content').classList.remove('active');
+             }
+        });
+
+
+        // Logout
+        logoutBtn.addEventListener('click', logoutUser);
+        logoutMobileBtn.addEventListener('click', logoutUser);
+
+        // User profile dropdown close on outside click
+        document.addEventListener('click', (e) => {
+            if (!userProfileDiv.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add('hidden');
+            }
+        });
+
+        // localStorage event listener for sync across tabs
+        window.addEventListener('storage', (event) => {
+            if (event.key === CURRENT_USER_KEY) {
+                const updatedUser = event.newValue ? JSON.parse(event.newValue) : null;
+                if (JSON.stringify(currentUser) !== JSON.stringify(updatedUser)) {
+                    currentUser = updatedUser;
+                    updateAuthButtons();
+                    showNotification('info', 'Ваш статус входа изменился.');
+                    // Force a page re-render if user state changes significantly
+                    if (!currentUser && currentView !== 'home') { // If logged out, go to home
+                         navigateTo('home');
+                    } else {
+                        renderPage(currentView); // Re-render to reflect permissions
+                    }
+                }
+            } else if ( event.key === THEME_KEY ) {
+                updateTheme();
+            } else if ( event.key.startsWith('chineseClass_') ) {
+                loadInitialData(); // Reload all data in case of broader changes
+                renderPage(currentView); // Re-render the page to reflect data changes
+                showNotification('info', 'Данные были обновлены.');
+            }
+        });
+
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadInitialData();
+        });
+
+    </script>
+</body>
+</html>
